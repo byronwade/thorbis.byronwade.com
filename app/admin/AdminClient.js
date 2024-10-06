@@ -7,26 +7,24 @@ export default function AdminBlueprintsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchBlueprints = async () => {
+    console.log('Fetching blueprints...');
+    try {
+      const response = await fetch('/api/blueprints');
+      if (!response.ok) throw new Error('Failed to fetch blueprints');
+      const data = await response.json();
+      console.log('Fetched blueprints:', data);
+      setBlueprints(data);
+    } catch (err) {
+      console.error('Error fetching blueprints:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBlueprints = async () => {
-      try {
-        const response = await fetch('/api/blueprints');
-        if (!response.ok) throw new Error('Failed to fetch blueprints');
-        const data = await response.json();
-        setBlueprints(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBlueprints();
-
-    // Fetch blueprints every 10 seconds
-    const intervalId = setInterval(fetchBlueprints, 10000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
   const setActiveBlueprint = async (id) => {
@@ -48,27 +46,44 @@ export default function AdminBlueprintsPage() {
     }
   };
 
+  const syncBlueprints = async () => {
+    try {
+      const response = await fetch('/api/sync-blueprints');
+      if (!response.ok) throw new Error('Failed to sync blueprints');
+      const result = await response.json();
+      console.log('Sync result:', result);
+      fetchBlueprints(); // Refresh the list after syncing
+    } catch (err) {
+      console.error('Error syncing blueprints:', err);
+      setError(err.message);
+    }
+  };
+
+  const testDatabaseConnection = async () => {
+    try {
+      const response = await fetch('/api/db-test');
+      const data = await response.json();
+      console.log('Database test result:', data);
+      alert(data.message || data.error);
+    } catch (err) {
+      console.error('Error testing database connection:', err);
+      alert('Error testing database connection');
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
       <h1>Blueprints</h1>
+      <button onClick={syncBlueprints}>Sync Blueprints</button>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {!loading && !error && blueprints.length === 0 && <p>No blueprints found.</p>}
       <ul>
-        {blueprints.map((blueprint) => (
-          <li key={blueprint.id} className="flex items-center justify-between mb-2">
-            <span>{blueprint.name}</span>
-            <button
-              onClick={() => setActiveBlueprint(blueprint.id)}
-              className={`px-4 py-2 rounded ${
-                blueprint.isActive
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-300 text-gray-700'
-              }`}
-            >
-              {blueprint.isActive ? 'Active' : 'Set Active'}
-            </button>
-          </li>
+        {blueprints.map(blueprint => (
+          <li key={blueprint.id}>{blueprint.name} - {blueprint.isActive ? 'Active' : 'Inactive'}</li>
         ))}
       </ul>
     </div>

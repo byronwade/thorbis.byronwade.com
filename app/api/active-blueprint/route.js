@@ -3,13 +3,16 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const activeBlueprint = await prisma.blueprint.findFirst({
+    const activeBlueprints = await prisma.blueprint.findMany({
       where: { isActive: true },
+      include: {
+        components: true,
+        templates: true,
+      },
     });
-
-    return NextResponse.json({ activeBlueprint });
+    return NextResponse.json(activeBlueprints);
   } catch (error) {
-    console.error('Error fetching active blueprint:', error);
+    console.error('Error fetching active blueprints:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

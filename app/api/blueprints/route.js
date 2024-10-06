@@ -5,14 +5,20 @@ export async function GET() {
     console.log('API route: Starting to fetch blueprints');
     
     try {
-        const blueprints = await prisma.blueprint.findMany();
+        const blueprints = await prisma.blueprint.findMany({
+            include: {
+                components: true,
+                templates: true,
+            },
+        });
+        
+        console.log('API route: Fetched blueprints:', blueprints);
         
         if (blueprints.length === 0) {
             console.log('API route: No blueprints found in the database');
             return NextResponse.json({ message: 'No blueprints found' }, { status: 404 });
         }
 
-        console.log('API route: Fetched blueprints:', blueprints);
         return NextResponse.json(blueprints);
     } catch (error) {
         console.error('Error fetching blueprints:', error);
