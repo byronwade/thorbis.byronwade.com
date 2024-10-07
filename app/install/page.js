@@ -44,7 +44,7 @@ export default function WelcomePage() {
 
         <div className="flex justify-center">
           <Button asChild size="lg" className="w-full sm:w-auto">
-            <Link href="/setup/step-1" className="inline-flex items-center justify-center">
+            <Link href="/install/database" className="inline-flex items-center justify-center">
               Let's Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
