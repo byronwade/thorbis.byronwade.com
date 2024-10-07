@@ -28,7 +28,6 @@ const sidebarItems = [
   { icon: <Rocket className="w-4 h-4" />, label: "Deployments", value: "deployments" },
   { icon: <Zap className="w-4 h-4" />, label: "Integrations", value: "integrations" },
   { icon: <Image className="w-4 h-4" />, label: "Media", value: "media" },
-  { icon: <BarChart className="w-4 h-4" />, label: "Analytics", value: "analytics" },
   { icon: <Settings className="w-4 h-4" />, label: "Settings", value: "settings" },
 ]
 
@@ -39,7 +38,6 @@ const contextualActions = {
   deployments: ["View deployment logs", "Trigger new deployment", "Deployment settings", "Rollback options"],
   integrations: ["View all integrations", "Add new integration", "Manage API keys", "Integration marketplace"],
   media: ["View media library", "Upload new media", "Manage folders", "Media settings"],
-  analytics: ["Site traffic overview", "Content performance", "User behavior", "Custom reports"],
   settings: ["General settings", "User management", "Site configuration", "Backup and restore"],
 }
 
