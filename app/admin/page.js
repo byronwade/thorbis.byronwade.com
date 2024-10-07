@@ -109,7 +109,7 @@ export default function Dashboard() {
         <Card className="col-span-full md:col-span-1 lg:col-span-2">
           <CardHeader>
             <CardTitle>Site Health</CardTitle>
-            <CardDescription>Overview of your site's performance</CardDescription>
+            <CardDescription>Overview of your site&apos;s performance</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

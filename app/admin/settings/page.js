@@ -47,7 +47,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>General Settings</CardTitle>
-              <CardDescription>Manage your site's basic configuration.</CardDescription>
+              <CardDescription>Manage your site&apos;s basic configuration.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">

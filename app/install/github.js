@@ -31,7 +31,7 @@ export default function GitHubIntegration() {
               <span>Connect to GitHub</span>
             </CardTitle>
             <CardDescription className="mt-2 text-lg">
-              Thorbis will use GitHub to manage your site's blueprints and components.
+              Thorbis will use GitHub to manage your site&apos;s blueprints and components.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -48,7 +48,7 @@ export default function GitHubIntegration() {
                 <li className="flex items-start">
                   <FileCode className="flex-shrink-0 w-5 h-5 mt-1 mr-2 text-primary" />
                   <span>
-                    <strong>Version Control:</strong> GitHub allows you to track changes to your website's blueprints and components over time, making it easy to revert to previous versions if needed.
+                    <strong>Version Control:</strong> GitHub allows you to track changes to your website&apos;s blueprints and components over time, making it easy to revert to previous versions if needed.
                   </span>
                 </li>
                 <li className="flex items-start">

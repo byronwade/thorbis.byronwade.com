@@ -10,15 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { Search, Check } from 'lucide-react'
 
-interface Blueprint {
-  id: string
-  title: string
-  description: string
-  image: string
-  category: string
-}
-
-const blueprints: Blueprint[] = [
+const blueprints = [
   {
     id: '1',
     title: 'Modern Portfolio',
@@ -84,7 +76,7 @@ export default function BlueprintSelection() {
     currentPage * itemsPerPage
   )
 
-  const handleBlueprintSelect = (blueprint: Blueprint) => {
+  const handleBlueprintSelect = (blueprint) => {
     setSelectedBlueprint(blueprint)
   }
 

@@ -38,14 +38,14 @@ export default function WelcomePage() {
           />
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Welcome to Thorbis!</h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Let's set up your Thorbis-powered website in just a few steps.
+            Let&apos;s set up your Thorbis-powered website in just a few steps.
           </p>
         </div>
 
         <div className="flex justify-center">
           <Button asChild size="lg" className="w-full sm:w-auto">
             <Link href="/install/database" className="inline-flex items-center justify-center">
-              Let's Get Started
+              Let&apos;s Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </Button>
@@ -54,7 +54,7 @@ export default function WelcomePage() {
         <Separator className="bg-gray-200 dark:bg-gray-700" />
 
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-center text-gray-900 dark:text-white">What you'll need:</h2>
+          <h2 className="text-2xl font-semibold text-center text-gray-900 dark:text-white">What you&apos;ll need:</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {[
               "Business name and contact info",
