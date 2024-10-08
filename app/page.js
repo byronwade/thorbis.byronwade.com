@@ -1,50 +1,88 @@
-'use client';
+// app/[...slug]/page.js
+import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma'; // Alias for Prisma client
 
-import { useState, useEffect } from 'react';
+export default async function DynamicPage({ params }) {
+  const slug = '/' + (params.slug ? params.slug.join('/') : '');
 
-export default function Home() {
-  const [activeBlueprints, setActiveBlueprints] = useState([]);
+  // Fetch the active blueprint
+  const activeBlueprint = await prisma.blueprint.findFirst({
+    where: { isActive: true },
+    include: {
+      components: true,
+      templates: true,
+    },
+  });
 
-  useEffect(() => {
-    const fetchActiveBlueprints = async () => {
-      try {
-        const response = await fetch('/api/active-blueprints');
-        if (!response.ok) throw new Error('Failed to fetch active blueprints');
-        const data = await response.json();
-        setActiveBlueprints(data);
-      } catch (error) {
-        console.error('Error fetching active blueprints:', error);
-      }
-    };
+  if (!activeBlueprint) {
+    return notFound(); // Handle case where no active blueprint exists
+  }
 
-    fetchActiveBlueprints();
-  }, []);
+  // Fetch the page based on the slug
+  const page = await prisma.page.findUnique({
+    where: { slug },
+    include: {
+      template: true, // Include the template relation if assigned
+      seoSettings: true, // Include SEO settings if available
+    },
+  });
+
+  if (!page) {
+    return notFound(); // Return 404 if the page is not found
+  }
+
+  // Get the folder name for the active blueprint
+  const blueprintFolder = activeBlueprint.name; // This will dynamically load from the DB
+
+  // Import the template dynamically from the blueprint folder (using aliases)
+  let TemplateComponent = null;
+  if (page.template) {
+    try {
+      // Dynamically import the template from the blueprints folder using an alias
+      TemplateComponent = await import(
+        `@/blueprints/templates/${blueprintFolder}/${page.template.name}`
+      ).then((mod) => mod.default);
+    } catch (err) {
+      console.error('Template not found:', err);
+      return notFound(); // Return 404 if the template is not found
+    }
+  }
+
+  // Dynamically import components for the active blueprint using aliases
+  const dynamicComponents = {};
+  for (const component of activeBlueprint.components) {
+    try {
+      const componentModule = await import(
+        `@/blueprints/components/${component.name}`
+      );
+      dynamicComponents[component.name] = componentModule.default;
+    } catch (err) {
+      console.error(`Component ${component.name} not found:`, err);
+    }
+  }
+
+  // Handle SEO settings
+  const { title, description } = page.seoSettings || {};
 
   return (
-    <main>
-      <h1>Welcome to My Website</h1>
-      {activeBlueprints.length > 0 ? (
-        activeBlueprints.map(blueprint => (
-          <div key={blueprint.id}>
-            <h2>Active Blueprint: {blueprint.name}</h2>
-            <h3>Components:</h3>
-            <ul>
-              {blueprint.components.map(component => (
-                <li key={component.id}>{component.name}</li>
-              ))}
-            </ul>
-            <h3>Templates:</h3>
-            <ul>
-              {blueprint.templates.map(template => (
-                <li key={template.id}>{template.name}</li>
-              ))}
-            </ul>
-            <pre>{JSON.stringify(blueprint.config, null, 2)}</pre>
-          </div>
-        ))
-      ) : (
-        <p>No active blueprints found.</p>
-      )}
-    </main>
+    <>
+      {/* Handle SEO metadata */}
+      <head>
+        {title && <title>{title}</title>}
+        {description && <meta name="description" content={description} />}
+      </head>
+
+      <div>
+        {/* Render the page content using the assigned template */}
+        {TemplateComponent ? (
+          <TemplateComponent
+            components={dynamicComponents} // Pass the dynamically imported components
+            content={page.content} // Pass the page content
+          />
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: page.content }} />
+        )}
+      </div>
+    </>
   );
 }

@@ -167,3 +167,106 @@ model AnalyticsEvent {
   user      User?     @relation(fields: [userId], references: [id])
   timestamp DateTime  @default(now())
 }
+
+
+
+
+// model User {
+//   id        Int      @id @default(autoincrement())
+//   email     String   @unique
+//   password  String
+//   name      String?
+//   role      Role     @relation(fields: [roleId], references: [id])
+//   roleId    Int
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Role {
+//   id          Int       @id @default(autoincrement())
+//   name        String    @unique
+//   permissions String[]  // List of permissions
+//   users       User[]
+// }
+
+// model Blueprint {
+//   id          Int          @id @default(autoincrement())
+//   name        String       @unique
+//   isActive    Boolean      @default(false) // Only one can be active at a time
+//   components  Component[]  // Components defined by the blueprint
+//   templates   Template[]   // Templates associated with the blueprint
+//   styles      Style[]      // Styles defined by the blueprint
+//   packages    Package[]    // npm packages defined by the blueprint
+//   createdAt   DateTime     @default(now())
+//   updatedAt   DateTime     @updatedAt
+// }
+
+// model Component {
+//   id          Int          @id @default(autoincrement())
+//   name        String
+//   type        String
+//   settings    Json
+//   blueprint   Blueprint?   @relation(fields: [blueprintId], references: [id])
+//   blueprintId Int?
+// }
+
+// model Template {
+//   id          Int          @id @default(autoincrement())
+//   name        String       @unique
+//   components  Component[]  @relation("TemplateComponents")
+//   blueprint   Blueprint?   @relation(fields: [blueprintId], references: [id])
+//   blueprintId Int?
+// }
+
+// model Style {
+//   id          Int        @id @default(autoincrement())
+//   css         String     // Global CSS or scoped styles for the blueprint
+//   blueprint   Blueprint? @relation(fields: [blueprintId], references: [id])
+//   blueprintId Int?
+// }
+
+// model Package {
+//   id          Int        @id @default(autoincrement())
+//   name        String     // Name of the npm package
+//   version     String     // Version of the package
+//   blueprint   Blueprint? @relation(fields: [blueprintId], references: [id])
+//   blueprintId Int?
+// }
+
+// model SeoSettings {
+//   id          Int       @id @default(autoincrement())
+//   title       String?
+//   description String?
+//   keywords    String?
+//   ogImage     String?
+// }
+
+// model Page {
+//   id           Int           @id @default(autoincrement())
+//   title        String
+//   slug         String         @unique
+//   content      Json?
+//   template     Template?      @relation(fields: [templateId], references: [id])
+//   templateId   Int?
+//   status       String         // 'Draft', 'Published', etc.
+//   seoSettings  SeoSettings?   @relation(fields: [seoSettingsId], references: [id])
+//   seoSettingsId Int?
+//   createdAt    DateTime       @default(now())
+//   updatedAt    DateTime       @updatedAt
+// }
+
+// model Plugin {
+//   id        Int      @id @default(autoincrement())
+//   name      String   @unique
+//   version   String
+//   isActive  Boolean  @default(false)
+//   settings  Json
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model Setting {
+//   id    Int    @id @default(autoincrement())
+//   key   String @unique
+//   value String
+// }
