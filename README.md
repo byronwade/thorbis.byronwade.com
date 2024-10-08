@@ -8,7 +8,7 @@ Thorbis is fully serverless, thanks to integrations with GitHub, Vercel, and Net
 
 You can deploy Thorbis to Vercel with one click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/**GITHUB_USERNAME**/thorbis&env=DATABASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY&project-name=thorbis&repository-name=thorbis)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/byronwade/thorbis.byronwade.com&env=DATABASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY&project-name=Thorbis&repository-name=Thorbis)
 
 ## Deploy on Netlify
 
