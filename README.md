@@ -53,7 +53,7 @@ You can deploy Thorbis to Netlify with one click:
 1. Clone the Thorbis repository:
 
     ```bash
-    git clone https://github.com/your-username/thorbis.git
+    git clone https://github.com/byronwade/thorbis.git
     cd thorbis
     ```
 
