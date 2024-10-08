@@ -51,62 +51,43 @@ You can deploy Thorbis to Netlify with one click:
 ## Installation
 
 1. Clone the Thorbis repository:
-    
+
     ```bash
-    bash
-    Copy code
     git clone https://github.com/your-username/thorbis.git
     cd thorbis
-    
     ```
-    
+
 2. Install the dependencies:
-    
+
     ```bash
-    bash
-    Copy code
     npm install
-    
     ```
-    
+
 3. Set up the database:
-    
+
     Thorbis uses **Prisma** for database management. Set up the `.env` file with your database credentials.
-    
+
     ```bash
-    bash
-    Copy code
     cp .env.example .env
-    
     ```
-    
+
 4. Run the Prisma migrations:
-    
+
     ```bash
-    bash
-    Copy code
     npx prisma migrate dev --name init
-    
     ```
-    
+
 5. Generate the Prisma client:
-    
+
     ```bash
-    bash
-    Copy code
     npx prisma generate
-    
     ```
-    
+
 6. Run the development server:
-    
+
     ```bash
-    bash
-    Copy code
     npm run dev
-    
     ```
-    
 
 Thorbis will now be running locally at `http://localhost:3000`.
 
