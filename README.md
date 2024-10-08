@@ -4,6 +4,20 @@
 
 Thorbis is fully serverless, thanks to integrations with GitHub, Vercel, and Netlify, allowing for seamless control over deployments and repositories. It also supports nearly any database via **Prisma** and uses **Clerk** for authentication, making it a powerful yet intuitive platform for website management.
 
+## Deploy on Vercel
+
+You can deploy Thorbis to Vercel with one click:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/**GITHUB_USERNAME**/thorbis&env=DATABASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY&project-name=thorbis&repository-name=thorbis)
+
+## Deploy on Netlify
+
+You can deploy Thorbis to Netlify with one click:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/**GITHUB_USERNAME**/thorbis#readme&env=DATABASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY)
+
+> **Note:** Replace `**GITHUB_USERNAME**` with your actual GitHub username.
+
 ## Key Features
 
 - 🎨 **Modern WordPress Alternative**: Combines full developer control over the codebase with a simple interface for non-technical users to set up websites.
@@ -135,8 +149,6 @@ Components (or blocks) are handled like WordPress blocks, dynamically rendered a
 Example structure of a blueprint:
 
 ```json
-json
-Copy code
 {
   "components": [
     {
@@ -178,8 +190,6 @@ Components are dynamically imported based on the blueprint and rendered sequenti
 ### Example Page Rendering
 
 ```json
-json
-Copy code
 {
   "title": "About Us",
   "blocks": [
@@ -203,9 +213,7 @@ Thorbis includes a **Developer API** that can be used to access and modify conte
 
 ### Example Usage in a Template
 
-```
-js
-Copy code
+```js
 import { useThorbisApi } from 'lib/thorbis-api';
 
 const Hero = () => {
