@@ -1,43 +1,169 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  directUrl  = env("DIRECT_URL")
-  extensions = [uuid_ossp(map: "uuid-ossp", schema: "extensions")]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model test_table {
-  id   Int     @id @default(autoincrement())
-  name String?
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  name      String?
+  role      Role      @relation(fields: [roleId], references: [id])
+  roleId    Int
+  media     Media[]   // One-to-many relationship with Media
+  pages     Page[]    @relation("PageAuthor") // One-to-many relationship with Page (as author)
+  backups   Backup[]  @relation("BackupCreator")
+  deployments Deployment[] @relation("DeploymentTrigger")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  analyticsEvents AnalyticsEvent[]
 }
 
-model Blueprint {
-  id          String       @id @default(uuid())
+model Role {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  permissions String[]  // List of permissions
+  users       User[]
+}
+
+model Page {
+  id            Int           @id @default(autoincrement())
+  title         String
+  slug          String         @unique
+  content       Json?
+  template      Template?      @relation(fields: [templateId], references: [id])
+  templateId    Int?
+  status        String         // 'Draft', 'Published', etc.
+  seoSettings   SeoSettings?   @relation(fields: [seoSettingsId], references: [id])
+  seoSettingsId Int?
+  author        User?          @relation(name: "PageAuthor", fields: [authorId], references: [id])
+  authorId      Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Template {
+  id          Int          @id @default(autoincrement())
   name        String       @unique
-  config      Json
-  isActive    Boolean      @default(false)
-  components  Component[]
-  templates   Template[]
+  components  Component[]  @relation("TemplateComponents")
+  pages       Page[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
 
 model Component {
-  id          String   @id @default(uuid())
+  id          Int          @id @default(autoincrement())
   name        String
-  path        String
-  blueprint   Blueprint @relation(fields: [blueprintId], references: [id])
-  blueprintId String
+  type        String
+  settings    Json
+  templates   Template[]   @relation("TemplateComponents")
 }
 
-model Template {
-  id          String   @id @default(uuid())
-  name        String
-  path        String
-  blueprint   Blueprint @relation(fields: [blueprintId], references: [id])
-  blueprintId String
+model Media {
+  id           Int       @id @default(autoincrement())
+  filename     String
+  url          String
+  type         String    // 'image', 'video', etc.
+  size         Int
+  uploadedBy   User?     @relation(fields: [uploadedById], references: [id])
+  uploadedById Int?
+  createdAt    DateTime  @default(now())
+}
+
+model Menu {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  items    MenuItem[]
+}
+
+model MenuItem {
+  id        Int        @id @default(autoincrement())
+  label     String
+  url       String
+  order     Int
+  menu      Menu       @relation(fields: [menuId], references: [id])
+  menuId    Int
+  parent    MenuItem?  @relation("MenuItemToParent", fields: [parentId], references: [id])
+  parentId  Int?
+  children  MenuItem[] @relation("MenuItemToParent")
+}
+
+model ContentType {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  fields      Field[]
+  contents    Content[]
+}
+
+model Field {
+  id            Int         @id @default(autoincrement())
+  name          String
+  type          String      // 'String', 'Int', 'Boolean', etc.
+  isRequired    Boolean     @default(false)
+  contentType   ContentType @relation(fields: [contentTypeId], references: [id])
+  contentTypeId Int
+}
+
+model Content {
+  id            Int         @id @default(autoincrement())
+  contentType   ContentType @relation(fields: [contentTypeId], references: [id])
+  contentTypeId Int
+  data          Json
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model SeoSettings {
+  id          Int       @id @default(autoincrement())
+  title       String?
+  description String?
+  keywords    String?
+  ogImage     String?
+  pages       Page[]
+}
+
+model Plugin {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  version   String
+  isActive  Boolean  @default(false)
+  settings  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+}
+
+model Backup {
+  id           Int       @id @default(autoincrement())
+  filename     String
+  createdBy    User      @relation(name: "BackupCreator", fields: [createdById], references: [id])
+  createdById  Int
+  createdAt    DateTime  @default(now())
+}
+
+model Deployment {
+  id            Int       @id @default(autoincrement())
+  status        String    // 'Pending', 'Success', 'Failed'
+  triggeredBy   User      @relation(name: "DeploymentTrigger", fields: [triggeredById], references: [id])
+  triggeredById Int
+  logs          String?
+  createdAt     DateTime  @default(now())
+}
+
+model AnalyticsEvent {
+  id        Int       @id @default(autoincrement())
+  eventType String
+  pageUrl   String
+  userId    Int?
+  user      User?     @relation(fields: [userId], references: [id])
+  timestamp DateTime  @default(now())
 }
