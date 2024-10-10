@@ -43,6 +43,15 @@ export async function syncBlueprints() {
 
     console.log('Valid blueprints:', validBlueprints);
 
+    if (validBlueprints.length === 0) {
+      console.log('No valid blueprints found');
+      return {
+        success: true,
+        validBlueprints: [],
+        removedBlueprints: [],
+      };
+    }
+
     // Sync valid blueprints with the database
     for (const blueprint of validBlueprints) {
       const createdBlueprint = await prisma.blueprint.upsert({

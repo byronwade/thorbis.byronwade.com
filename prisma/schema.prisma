@@ -168,8 +168,30 @@ model AnalyticsEvent {
   timestamp DateTime  @default(now())
 }
 
+model Blueprint {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  config     Json
+  isActive   Boolean     @default(false)
+  components Component[]
+  templates  Template[]
+}
 
+model Component {
+  id          Int       @id @default(autoincrement())
+  name        String
+  path        String
+  blueprint   Blueprint @relation(fields: [blueprintId], references: [id])
+  blueprintId Int
+}
 
+model Template {
+  id          Int       @id @default(autoincrement())
+  name        String
+  path        String
+  blueprint   Blueprint @relation(fields: [blueprintId], references: [id])
+  blueprintId Int
+}
 
 // model User {
 //   id        Int      @id @default(autoincrement())

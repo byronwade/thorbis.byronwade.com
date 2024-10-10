@@ -21,7 +21,7 @@ export async function GET() {
 
         return NextResponse.json(blueprints);
     } catch (error) {
-        console.error('Error fetching blueprints:', error);
+        console.error('Error fetching blueprints:', error.message);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
