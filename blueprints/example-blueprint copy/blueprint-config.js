@@ -1,5 +1,5 @@
 module.exports = {
     name: "Example Blueprint",
     layouts: ["default", "blog"],
-    components: ["header", "footer", "blogPost", "for testing"]
+    components: ["header", "footer", "blogPost"]
 };
