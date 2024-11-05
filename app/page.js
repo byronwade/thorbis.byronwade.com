@@ -2,7 +2,8 @@
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma'; // Alias for Prisma client
 
-export default async function DynamicPage({ params }) {
+export default async function DynamicPage(props) {
+  const params = await props.params;
   const slug = '/' + (params.slug ? params.slug.join('/') : '');
 
   // Fetch the active blueprint
